@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBJECTS</title>
+</head>
+
+<body>
+    <!-- Question # 1 -->
+    <script>
+        var itemsArray = [
+            { name: "juice", price: 50, quantity: 3 },
+            { name: "cookie", price: 30, quantity: 9 },
+            { name: "shirt", price: 880, quantity: 1 },
+            { name: "pen", price: 100, quantity: 2 }
+        ];
+
+        var total = 0;
+
+        for (var i = 0; i < itemsArray.length; i++) {
+            var totalprice = itemsArray[i].price * itemsArray[i].quantity;
+            total += totalprice;
+            document.write(`Total price of ${itemsArray[i].name} is: ${totalprice}<br>`);
+        }
+
+        document.write(`Total price of all items is: ${total}`);
+    </script>
+
+    <!-- Question # 2 -->
+    <script>
+        var person = {
+            name: "Fatima",
+            age: 19,
+            email: "uroojfatima@gmail.com",
+            password: "fatha124",
+            gender: "Female",
+            city: "Karachi",
+            country: "Pakistan"
+        };
+
+        var ageExists = "age" in person;
+        var countryExists = "country" in person;
+        var firstNameExists = "firstName" in person;
+        var lastNameExists = "lastName" in person;
+
+
+        document.write(`Age property exists: ${ageExists} <br>`);
+        document.write(`Country property exists: ${countryExists} <br>`);
+        document.write(`FirstName property exists: ${firstNameExists} <br>`);
+        document.write(`LastName property exists: ${lastNameExists} <br>`);
+    </script>
+
+    <!-- Question # 3 -->
+    <script>
+        function authors(author, novel1, novel2, novel3) {
+            this.author = author;
+            this.novel1 = novel1;
+            this.novel2 = novel2;
+            this.novel3 = novel3;
+        }
+
+        var novelsby = new authors("NimraAhmed", "Mushaf", "Jannatkay Pattay", "Namal");
+        var novelby = new authors("UmeraAhmed", "Alif", "PeereKAmil", "AbeHayat");
+
+        console.log(novelsby);
+        console.log(novelby);
+    </script>
+
+    <!-- Question # 4 -->
+    <h2>Enter Population Data</h2>
+
+    <form id="populationForm">
+        Name: <input type="text" id="name" required><br><br>
+
+        Gender:
+        <input type="radio" name="gender" value="Male" required> Male
+        <input type="radio" name="gender" value="Female"> Female
+        <input type="radio" name="gender" value="Other"> Other<br><br>
+
+        Address: <input type="text" id="address" required><br><br>
+
+        Education:
+        <select id="education" required>
+            <option value="High School">High School</option>
+            <option value="Bachelor's Degree">Bachelor's Degree</option>
+            <option value="Master's Degree">Master's Degree</option>
+            <option value="PhD">PhD</option>
+        </select><br><br>
+
+        Profession:
+        <select id="profession" required>
+            <option value="Doctor">Doctor</option>
+            <option value="Engineer">Engineer</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Artist">Artist</option>
+        </select><br><br>
+
+        <button type="submit">Save Record</button>
+    </form>
+
+    <h3>Saved Records:</h3>
+    <ul id="recordList"></ul>
+
+    <script>
+        function PopulationRecord(name, gender, address, education, profession) {
+            this.name = name;
+            this.gender = gender;
+            this.address = address;
+            this.education = education;
+            this.profession = profession;
+        }
+
+        function saveRecord(record) {
+            let records = JSON.parse(localStorage.getItem('populationRecords')) || [];
+            records.push(record);
+            localStorage.setItem('populationRecords', JSON.stringify(records));
+        }
+
+        function displayRecords() {
+            let records = JSON.parse(localStorage.getItem('populationRecords')) || [];
+            const recordList = document.getElementById('recordList');
+            recordList.innerHTML = ''; 
+            records.forEach(function (record, index) {
+                let listItem = document.createElement('li');
+                listItem.textContent = `Name: ${record.name}, Gender: ${record.gender}, Address: ${record.address}, Education: ${record.education}, Profession: ${record.profession}`;
+                recordList.appendChild(listItem);
+            });
+        }
+
+        document.getElementById('populationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const address = document.getElementById('address').value;
+            const education = document.getElementById('education').value;
+            const profession = document.getElementById('profession').value;
+
+            const newRecord = new PopulationRecord(name, gender, address, education, profession);
+            saveRecord(newRecord);
+            displayRecords();
+
+            document.getElementById('populationForm').reset();
+        });
+
+        window.onload = displayRecords;
+    </script>
+
+
+</body>
+
+</html>
